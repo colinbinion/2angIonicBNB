@@ -37,3 +37,29 @@ console.log("you are on port", app.get('port'));
 });
 
 // API routes below
+// endpoint /api/todos
+
+//GET all todos
+app.get("/api/todos", function(req, res) {
+  db.collection("todos").find({}).toArray(function(err, docs) {
+    if (err) {
+      handleError(res, err.message, "Somethin' isn't right. Getting todos failed.");
+    } else {
+      res.status(200).json(docs);
+    }
+  });
+});
+
+
+// endpoint /api/todos/:id
+
+// GET todo by id. not used on front end.
+app.get("/api/todos/:id", function(req, res) {
+  db.collection("todos").findOne({ _id: new ObjectID(req.paprams.id) }, function(err, doc) {
+    if (err) {
+      handleError(res, err.message, "Can't get todo by _id");
+    } else {
+      res.status(200).json(doc);
+    }
+  });
+});
